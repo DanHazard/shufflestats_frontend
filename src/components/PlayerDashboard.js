@@ -2,16 +2,17 @@ import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Card, Table, Header, Button,  Segment } from 'semantic-ui-react'
+import { Card, Table, Header, Button } from 'semantic-ui-react'
 import { currentPlayer } from '../actions/player'
-import styles from '../App.css'
+
+
 
 class PlayerDashboard extends Component {
 
   constructor() {
     super()
     this.state = {
-      teams: []
+      team: []
     }
   }
 
@@ -20,7 +21,7 @@ class PlayerDashboard extends Component {
   }
 
 
-  checkAuthToken() {
+  checkAuthToken = async () => {
     const token = localStorage.getItem("token")
     if (!token) {
       this.props.history.push('/login')
@@ -31,21 +32,28 @@ class PlayerDashboard extends Component {
             'Authorization': `Bearer ${token}`
           }
         }
-        fetch('http://localhost:3001/api/v1/current_player', reqObj)
+        await fetch('http://localhost:3001/api/v1/current_player', reqObj)
         .then(resp => resp.json())
         .then(data => {
           this.props.currentPlayer(data.player.data.attributes)
         })
+        this.getTeamData()
       }
     }
 
-    getTeamData() {
-
+    getTeamData = () => {
+      fetch(`http://localhost:3001/teams/${this.props.player.team_id}`)
+      .then(resp => resp.json())
+      .then(teamData => {
+        this.setState({
+          team: teamData.data.attributes
+        })
+      })
     }
+
 
   renderPlayerData = () => {
     if (this.props.player) {
-      console.log(this.props.player)
       return (
         <div>
           <Header textAlign="center" as='h1' style={{padding:"100px"}}>Welcome {this.props.player.first_name}!</Header>
@@ -94,7 +102,7 @@ class PlayerDashboard extends Component {
               <Table celled striped color='teal' verticalAlign='middle'>
                 <Table.Header>
                   <Table.Row>
-                    <Table.HeaderCell>Team's Season Stats</Table.HeaderCell>
+                    <Table.HeaderCell>{this.state.team.team_name} Season Stats</Table.HeaderCell>
                     <Table.HeaderCell></Table.HeaderCell>
                   </Table.Row>
                 </Table.Header>
@@ -102,19 +110,19 @@ class PlayerDashboard extends Component {
                 <Table.Body>
                   <Table.Row>
                     <Table.Cell collapsing>Wins</Table.Cell>
-                    <Table.Cell collapsing>{this.props.player.hammer_rating}</Table.Cell>
+                    <Table.Cell collapsing>{this.state.team.total_wins}</Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell collapsing>Losses</Table.Cell>
-                    <Table.Cell collapsing>{this.props.player.hammer_rating}</Table.Cell>
+                    <Table.Cell collapsing>{this.state.team.total_losses}</Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell collapsing>Total Points Scored</Table.Cell>
-                    <Table.Cell collapsing>{this.props.player.hammer_rating}</Table.Cell>
+                    <Table.Cell collapsing>{this.state.team.total_points_scored}</Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell collapsing>Total Points Allowed</Table.Cell>
-                    <Table.Cell collapsing>{this.props.player.hammer_rating}</Table.Cell>
+                    <Table.Cell collapsing>{this.state.team.total_points_allowed}</Table.Cell>
                   </Table.Row>
                 </Table.Body>
               </Table>
@@ -141,6 +149,7 @@ class PlayerDashboard extends Component {
   }
 
   render() {
+    console.log(this.state)
   return(
       <div className='PlayerDashboard' style={{backgroundColor:'ghostwhite', padding:'100px'}}>
         {this.renderPlayerData()}
