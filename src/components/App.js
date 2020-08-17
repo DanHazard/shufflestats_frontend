@@ -1,28 +1,37 @@
 import React, { Component } from 'react';
-import logo from '../logo.svg';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { connect } from 'react-redux'
+import {currentPlayer } from '../actions/player'
+import NavBar from './NavBar'
+import PlayerDashboard from './PlayerDashboard'
+import Login from './Login'
+import PlayerSignUp from './PlayerSignUp'
+import GameLogger from './GameLogger'
 import '../App.css';
 
 class App extends Component {
+
   render() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <NavBar />
+      <Switch>
+          <Route path='/dashboard' component={PlayerDashboard} />
+          <Route exact path='/login' component={Login} />
+          <Route exact path='/sign_up' component={PlayerSignUp} />
+          <Route path='/game' component={GameLogger} />
+      </Switch>
     </div>
   );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {player: state.player}
+}
+
+const mapDispatchToProps = {
+  currentPlayer
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

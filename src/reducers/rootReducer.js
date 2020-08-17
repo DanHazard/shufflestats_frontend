@@ -3,6 +3,6 @@ import playerReducer from './playerReducer'
 import teamReducer from './teamReducer'
 
 export default combineReducers({
-  playerReducer,
-  teamReducer
+  player: playerReducer,
+  team: teamReducer
 })
