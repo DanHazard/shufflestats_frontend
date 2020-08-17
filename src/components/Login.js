@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import { Header, Form, Button, Grid } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux'
@@ -41,7 +41,7 @@ class Login extends Component {
       } else {
         localStorage.setItem('token', data.token)
         this.props.loginPlayer(data)
-        this.props.history.push('/home')
+        this.props.history.push('/dashboard')
       }
     })
   }

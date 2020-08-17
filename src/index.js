@@ -18,8 +18,6 @@ ReactDOM.render(
   <Provider store={store}>
     <Router>
       <App />
-      <Route exact path='/login' component={Login} />
-      <Route exact path='sign_up' component={PlayerSignUp} />
     </Router>
   </Provider>,
   document.getElementById('root')

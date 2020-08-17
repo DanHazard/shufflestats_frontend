@@ -1,43 +1,26 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux'
-import {loginPlayer } from '../actions/player'
+import {currentPlayer } from '../actions/player'
+import NavBar from './NavBar'
+import PlayerDashboard from './PlayerDashboard'
+import Login from './Login'
+import PlayerSignUp from './PlayerSignUp'
+import GameLogger from './GameLogger'
 import '../App.css';
 
 class App extends Component {
 
-  state = {
-    redirect: null
-  }
-
-  componentDidMount() {
-    const token = localStorage.getItem("token")
-    if (!token) {
-      this.setState({
-        redirect: '/login'
-      })} else {
-        const reqObj  = {
-          method: "GET",
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        }
-        fetch('http://localhost:3001/api/v1/current_player', reqObj)
-        .then(resp => resp.json())
-        .then(data => {
-          console.log(data)
-          this.props.loginPlayer(data.player.data.attributes)
-        })
-      }
-    }
-
   render() {
-    if (this.state.redirect) {
-      return <Redirect to={this.state.redirect} />
-    }
   return (
     <div className="App">
-      A user is logged in.
+    <NavBar />
+      <Switch>
+          <Route path='/dashboard' component={PlayerDashboard} />
+          <Route exact path='/login' component={Login} />
+          <Route exact path='/sign_up' component={PlayerSignUp} />
+          <Route path='/game' component={GameLogger} />
+      </Switch>
     </div>
   );
   }
@@ -48,7 +31,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = {
-  loginPlayer
+  currentPlayer
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
