@@ -8,7 +8,19 @@ import styles from '../App.css'
 
 class PlayerDashboard extends Component {
 
+  constructor() {
+    super()
+    this.state = {
+      teams: []
+    }
+  }
+
   componentDidMount() {
+    this.checkAuthToken()
+  }
+
+
+  checkAuthToken() {
     const token = localStorage.getItem("token")
     if (!token) {
       this.props.history.push('/login')
@@ -27,103 +39,106 @@ class PlayerDashboard extends Component {
       }
     }
 
-    renderPlayerData = () => {
-      if (this.props.player) {
-        console.log(this.props.player)
-        return (
-          <div className={styles.stats_container}>
-            <Header textAlign="center" as='h1' style={{padding:"100px"}}>Welcome {this.props.player.first_name}!</Header>
-            <Card.Group centered style={{margin: 'auto'}}>
-              <Card color='teal'>
-                <Card.Content>
-                  <Table celled striped color='teal'>
-                    <Table.Header>
-                      <Table.Row>
-                        <Table.HeaderCell>{this.props.player.first_name}'s Season Stats</Table.HeaderCell>
-                        <Table.HeaderCell></Table.HeaderCell>
-                      </Table.Row>
-                    </Table.Header>
+    getTeamData() {
 
-                    <Table.Body>
-                      <Table.Row>
-                        <Table.Cell collapsing>Frames Played</Table.Cell>
-                        <Table.Cell collapsing>{this.props.player.frames_played}</Table.Cell>
-                      </Table.Row>
-                      <Table.Row>
-                        <Table.Cell collapsing>Total Points Scored</Table.Cell>
-                        <Table.Cell collapsing>{this.props.player.total_points_scored}</Table.Cell>
-                      </Table.Row>
-                      <Table.Row>
-                        <Table.Cell collapsing>Total Points Allowed</Table.Cell>
-                        <Table.Cell collapsing>{this.props.player.total_points_allowed}</Table.Cell>
-                      </Table.Row>
-                      <Table.Row>
-                        <Table.Cell collapsing>Points Scored Per Frame</Table.Cell>
-                        <Table.Cell collapsing>{this.props.player.points_per_frame}</Table.Cell>
-                      </Table.Row>
-                      <Table.Row>
-                        <Table.Cell collapsing>Points Allowed Per Frame</Table.Cell>
-                        <Table.Cell collapsing>{this.props.player.points_against_per_frame}</Table.Cell>
-                      </Table.Row>
-                      <Table.Row>
-                        <Table.Cell collapsing>Hammer Rating</Table.Cell>
-                        <Table.Cell collapsing>{this.props.player.hammer_rating}</Table.Cell>
-                      </Table.Row>
-                    </Table.Body>
-                  </Table>
-                </Card.Content>
-              </Card>
-              <Card color='teal'>
-                <Card.Content verticalAlign='middle'>
-                <Table celled striped color='teal' verticalAlign='middle'>
+    }
+
+  renderPlayerData = () => {
+    if (this.props.player) {
+      console.log(this.props.player)
+      return (
+        <div>
+          <Header textAlign="center" as='h1' style={{padding:"100px"}}>Welcome {this.props.player.first_name}!</Header>
+          <Card.Group centered style={{margin: 'auto'}}>
+            <Card color='teal'>
+              <Card.Content>
+                <Table celled striped color='teal'>
                   <Table.Header>
                     <Table.Row>
-                      <Table.HeaderCell>Team's Season Stats</Table.HeaderCell>
+                      <Table.HeaderCell>{this.props.player.first_name}'s Season Stats</Table.HeaderCell>
                       <Table.HeaderCell></Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
 
                   <Table.Body>
                     <Table.Row>
-                      <Table.Cell collapsing>Wins</Table.Cell>
-                      <Table.Cell collapsing>{this.props.player.hammer_rating}</Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell collapsing>Losses</Table.Cell>
-                      <Table.Cell collapsing>{this.props.player.hammer_rating}</Table.Cell>
+                      <Table.Cell collapsing>Frames Played</Table.Cell>
+                      <Table.Cell collapsing>{this.props.player.frames_played}</Table.Cell>
                     </Table.Row>
                     <Table.Row>
                       <Table.Cell collapsing>Total Points Scored</Table.Cell>
-                      <Table.Cell collapsing>{this.props.player.hammer_rating}</Table.Cell>
+                      <Table.Cell collapsing>{this.props.player.total_points_scored}</Table.Cell>
                     </Table.Row>
                     <Table.Row>
                       <Table.Cell collapsing>Total Points Allowed</Table.Cell>
+                      <Table.Cell collapsing>{this.props.player.total_points_allowed}</Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell collapsing>Points Scored Per Frame</Table.Cell>
+                      <Table.Cell collapsing>{this.props.player.points_per_frame}</Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell collapsing>Points Allowed Per Frame</Table.Cell>
+                      <Table.Cell collapsing>{this.props.player.points_against_per_frame}</Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell collapsing>Hammer Rating</Table.Cell>
                       <Table.Cell collapsing>{this.props.player.hammer_rating}</Table.Cell>
                     </Table.Row>
                   </Table.Body>
                 </Table>
               </Card.Content>
-              </Card>
-            </Card.Group>
+            </Card>
+            <Card color='teal'>
+              <Card.Content>
+              <Table celled striped color='teal' verticalAlign='middle'>
+                <Table.Header>
+                  <Table.Row>
+                    <Table.HeaderCell>Team's Season Stats</Table.HeaderCell>
+                    <Table.HeaderCell></Table.HeaderCell>
+                  </Table.Row>
+                </Table.Header>
 
-            <Button
-              color='teal'
-              size='huge'
-              textAlign='center'
-              animated='vertical'
-              as={NavLink}
-              to='/game'>
-                <Button.Content visible>Shuffle Icon</Button.Content>
-                <Button.Content hidden>Log Game!</Button.Content>
-            </Button>
+                <Table.Body>
+                  <Table.Row>
+                    <Table.Cell collapsing>Wins</Table.Cell>
+                    <Table.Cell collapsing>{this.props.player.hammer_rating}</Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell collapsing>Losses</Table.Cell>
+                    <Table.Cell collapsing>{this.props.player.hammer_rating}</Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell collapsing>Total Points Scored</Table.Cell>
+                    <Table.Cell collapsing>{this.props.player.hammer_rating}</Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell collapsing>Total Points Allowed</Table.Cell>
+                    <Table.Cell collapsing>{this.props.player.hammer_rating}</Table.Cell>
+                  </Table.Row>
+                </Table.Body>
+              </Table>
+            </Card.Content>
+            </Card>
+          </Card.Group>
 
-          </div>
+          <Button
+            color='teal'
+            size='huge'
+            animated='vertical'
+            as={NavLink}
+            to='/game'>
+              <Button.Content visible>Shuffle Icon</Button.Content>
+              <Button.Content hidden>Log Game!</Button.Content>
+          </Button>
 
-        )
-      } else {
-        console.log('No player found.')
-      }
+        </div>
+
+      )
+    } else {
+      console.log('No player found.')
     }
+  }
 
   render() {
   return(
