@@ -47,3 +47,28 @@
   margin-top: auto;
   padding: 50px;
 }
+
+.flex-container {
+  display: flex;
+
+}
+
+.flex-child {
+  flex: 1;
+}
+
+.game-container {
+  width: 75%;
+  margin: auto;
+  padding-left: 200px;
+  padding-top: 50px;
+}
+
+.table-container {
+  width: 75%;
+  margin: auto;
+}
+
+.game-log-container {
+  padding: 20px;
+}
