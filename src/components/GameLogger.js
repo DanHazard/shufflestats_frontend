@@ -7,6 +7,13 @@ import { currentPlayer } from '../actions/player'
 
 class GameLogger extends Component {
 
+  constructor() {
+    super()
+    this.state = {
+      home: []
+    }
+  }
+
   componentDidMount() {
     const token = localStorage.getItem("token")
     if (!token) {
@@ -68,7 +75,18 @@ class GameLogger extends Component {
             </Table.Row>
           </Table.Header>
 
-          
+          <Table.Body>
+            <Table.Row>
+              <Table.Cell textAlign='center'>
+                <Form.Input placeholder='score'>
+                </Form.Input>
+              </Table.Cell>
+              <Table.Cell textAlign='center'>
+                <Form.Input placeholder='score'>
+                </Form.Input>
+              </Table.Cell>
+            </Table.Row>
+          </Table.Body>
         </Table>
       </div>
     </div>

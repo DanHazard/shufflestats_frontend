@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Card, Table, Header, Button } from 'semantic-ui-react'
+import { Card, Table, Header, Button, Dropdown } from 'semantic-ui-react'
 import { currentPlayer } from '../actions/player'
 
 
@@ -12,7 +12,9 @@ class PlayerDashboard extends Component {
   constructor() {
     super()
     this.state = {
-      team: []
+      playerTeam: [],
+      opponents: [],
+      opponentValue: 0
     }
   }
 
@@ -37,23 +39,75 @@ class PlayerDashboard extends Component {
         .then(data => {
           this.props.currentPlayer(data.player.data.attributes)
         })
+        await this.getPlayerTeamData()
         this.getTeamData()
       }
     }
 
-    getTeamData = () => {
-      fetch(`http://localhost:3001/teams/${this.props.player.team_id}`)
-      .then(resp => resp.json())
-      .then(teamData => {
-        this.setState({
-          team: teamData.data.attributes
-        })
+  getPlayerTeamData = () => {
+    fetch(`http://localhost:3001/teams/${this.props.player.team_id}`)
+    .then(resp => resp.json())
+    .then(teamData => {
+      this.setState({
+        playerTeam: teamData.data.attributes
+      })
+    })
+  }
+
+  getTeamData = () => {
+    fetch('http://localhost:3001/teams/')
+    .then(resp => resp.json())
+    .then(teams => {
+      let opponents = teams.data.filter(team => team.attributes.id !== this.props.player.team_id)
+      this.setState({
+        teams: teams.data,
+        opponents: opponents
+      })
+    })
+  }
+
+  onOpponentSelect = (event, data) => {
+    this.setState({
+      opponentValue: data.value
+    })
+  }
+
+  handleClick = (event) => {
+    const reqObj = {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        home_team_id: this.state.playerTeam.id,
+        away_team_id: this.state.opponentValue
       })
     }
-
+    fetch('http://localhost:3001/games', reqObj)
+    .then(resp => resp.json())
+    .then(data => {
+      const reqObj = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          game_id: data.data.attributes.id,
+          home_team_id: data.data.attributes.home_team_id,
+          away_team_id: data.data.attributes.away_team_id
+        })
+      }
+      fetch('http://localhost:3001/matches', reqObj)
+      .then(resp => resp.json())
+      .then(data = console.log(data))
+    })
+  }
 
   renderPlayerData = () => {
     if (this.props.player) {
+      console.log(this.state)
       return (
         <div>
           <Header textAlign="center" as='h1' style={{padding:"100px"}}>Welcome {this.props.player.first_name}!</Header>
@@ -102,7 +156,7 @@ class PlayerDashboard extends Component {
               <Table celled striped color='teal' verticalAlign='middle'>
                 <Table.Header>
                   <Table.Row>
-                    <Table.HeaderCell>{this.state.team.team_name} Season Stats</Table.HeaderCell>
+                    <Table.HeaderCell>{this.state.playerTeam.team_name} Season Stats</Table.HeaderCell>
                     <Table.HeaderCell></Table.HeaderCell>
                   </Table.Row>
                 </Table.Header>
@@ -110,19 +164,19 @@ class PlayerDashboard extends Component {
                 <Table.Body>
                   <Table.Row>
                     <Table.Cell collapsing>Wins</Table.Cell>
-                    <Table.Cell collapsing>{this.state.team.total_wins}</Table.Cell>
+                    <Table.Cell collapsing>{this.state.playerTeam.total_wins}</Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell collapsing>Losses</Table.Cell>
-                    <Table.Cell collapsing>{this.state.team.total_losses}</Table.Cell>
+                    <Table.Cell collapsing>{this.state.playerTeam.total_losses}</Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell collapsing>Total Points Scored</Table.Cell>
-                    <Table.Cell collapsing>{this.state.team.total_points_scored}</Table.Cell>
+                    <Table.Cell collapsing>{this.state.playerTeam.total_points_scored}</Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell collapsing>Total Points Allowed</Table.Cell>
-                    <Table.Cell collapsing>{this.state.team.total_points_allowed}</Table.Cell>
+                    <Table.Cell collapsing>{this.state.playerTeam.total_points_allowed}</Table.Cell>
                   </Table.Row>
                 </Table.Body>
               </Table>
@@ -130,15 +184,31 @@ class PlayerDashboard extends Component {
             </Card>
           </Card.Group>
 
-          <Button
-            color='teal'
-            size='huge'
-            animated='vertical'
-            as={NavLink}
-            to='/game'>
-              <Button.Content visible>Shuffle Icon</Button.Content>
-              <Button.Content hidden>Log Game!</Button.Content>
-          </Button>
+          <div className='game-log-container'>
+            <Dropdown
+              placeholder='Choose Opponent'
+              selection
+              onChange={this.onOpponentSelect}
+              options={this.state.opponents.map(opponents => {
+                return {
+                  key: opponents.attributes.team_name,
+                  text: opponents.attributes.team_name,
+                  value: opponents.attributes.id}
+              })}
+              value={this.state.opponentName}>
+            </Dropdown>
+            <Button
+              style={{margin:'20px'}}
+              color='teal'
+              size='huge'
+              animated='vertical'
+              as={NavLink}
+              to='/game'
+              onClick={this.handleClick}>
+                <Button.Content visible>Shuffle Icon</Button.Content>
+                <Button.Content hidden>Log Game!</Button.Content>
+            </Button>
+          </div>
 
         </div>
 
@@ -149,7 +219,6 @@ class PlayerDashboard extends Component {
   }
 
   render() {
-    console.log(this.state)
   return(
       <div className='PlayerDashboard' style={{backgroundColor:'ghostwhite', padding:'100px'}}>
         {this.renderPlayerData()}
@@ -157,6 +226,7 @@ class PlayerDashboard extends Component {
     )
   }
 }
+
 
 const mapStateToProps = state => {
   return {player: state.player}
