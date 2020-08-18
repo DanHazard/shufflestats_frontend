@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Card, Table, Header, Button, Dropdown } from 'semantic-ui-react'
 import { currentPlayer } from '../actions/player'
+import { newGame } from '../actions/game'
+import { newMatch } from '../actions/match'
 
 
 
