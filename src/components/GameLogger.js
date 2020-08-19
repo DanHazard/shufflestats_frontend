@@ -12,6 +12,7 @@ class GameLogger extends Component {
   constructor() {
     super()
     this.state = {
+      showSubmit: false,
       homeTeam: [],
       awayTeam: [],
       home_player_one_id: 0,
@@ -27,10 +28,11 @@ class GameLogger extends Component {
       away_player_one_frames_played: 0,
       away_player_two_frames_played: 0,
       match_winner_id: 0,
-      currYellowFrame: 1,
-      currBlackFrame: 1,
+      match_loser_id: 0,
       yellowScore: 0,
       blackScore: 0,
+      currYellowFrame: 1,
+      currBlackFrame: 1,
       yellowInputValue: '',
       blackInputValue: '',
       yframe1: 0,
@@ -183,6 +185,7 @@ class GameLogger extends Component {
       if (this.state.currYellowFrame === 8) {
         this.setState({
           yframe8: this.state.yframe7 + this.state.yellowInputValue,
+          yellowScore: this.state.yframe7 + this.state.yellowInputValue,
           currYellowFrame: this.state.currYellowFrame + 1,
           home_player_two_score: this.state.home_player_two_score + this.state.yellowInputValue,
           home_player_two_frames_played: this.state.home_player_two_frames_played + 1,
@@ -221,7 +224,7 @@ class GameLogger extends Component {
           bframe3: this.state.bframe2 + this.state.blackInputValue,
           currBlackFrame: this.state.currBlackFrame + 1,
           away_player_one_score: this.state.away_player_one_score + this.state.blackInputValue,
-          away_player_one_frames_played: this.state.away_player_one_frames_played1,
+          away_player_one_frames_played: this.state.away_player_one_frames_played + 1,
           blackInputValue: ''
         })
       }
@@ -239,7 +242,7 @@ class GameLogger extends Component {
           bframe5: this.state.bframe4 + this.state.blackInputValue,
           currBlackFrame: this.state.currBlackFrame + 1,
           away_player_one_score: this.state.away_player_one_score + this.state.blackInputValue,
-          away_player_one_frames_played: this.state.away_player_one_frames_played1,
+          away_player_one_frames_played: this.state.away_player_one_frames_played + 1,
           blackInputValue: ''
         })
       }
@@ -257,7 +260,7 @@ class GameLogger extends Component {
           bframe7: this.state.bframe6 + this.state.blackInputValue,
           currBlackFrame: this.state.currBlackFrame + 1,
           away_player_one_score: this.state.away_player_one_score + this.state.blackInputValue,
-          away_player_one_frames_played: this.state.away_player_one_frames_played1,
+          away_player_one_frames_played: this.state.away_player_one_frames_played + 1,
           blackInputValue: ''
         })
       }
@@ -267,15 +270,69 @@ class GameLogger extends Component {
           currBlackFrame: this.state.currBlackFrame + 1,
           away_player_two_score: this.state.away_player_two_score + this.state.blackInputValue,
           away_player_two_frames_played: this.state.away_player_two_frames_played + 1,
+          blackScore: this.state.bframe7 + this.state.blackInputValue,
           blackInputValue: ''
         })
       }
     }
 
-    checkState = () => {
-      console.log(this.state)
+    calculateWinner = () => {
+      if ( this.state.yellowScore > this.state.blackScore ) {
+        this.setState({
+          match_winner_id: this.props.match.home_team_id,
+          match_loser_id: this.props.match.away_team_id
+        })
+      } else {
+        this.setState({
+          match_winner_id: this.props.match.away_team_id,
+          match_loser_id: this.props.match.home_team_id
+        })
+      }
     }
 
+    matchSubmit = () => {
+      console.log(this.state)
+      this.setState({
+        showSubmit: false
+      })
+      const reqObj = {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          home_player_one_id: this.state.home_player_one_id,
+          home_player_two_id: this.state.home_player_two_id,
+          away_player_one_id: this.state.away_player_one_id,
+          away_player_two_id: this.state.away_player_two_id,
+          home_player_one_score: this.state.home_player_one_score,
+          home_player_two_score: this.state.home_player_two_score,
+          away_player_one_score: this.state.away_player_one_score,
+          away_player_two_score: this.state.away_player_two_score,
+          home_player_one_frames_played: this.state.home_player_one_frames_played,
+          home_player_two_frames_played: this.state.home_player_two_frames_played,
+          away_player_one_frames_played: this.state.away_player_one_frames_played,
+          away_player_two_frames_played: this.state.away_player_two_frames_played,
+          match_winner_id: this.state.match_winner_id,
+          match_loser_id: this.state.match_loser_id,
+          yellowScore: this.state.yellowScore,
+          blackScore: this.state.blackScore,
+        })
+      }
+      fetch(`http://localhost:3001/matches/${this.props.match.id}`, reqObj)
+      .then(resp => resp.json())
+      .then(data => {
+        console.log(data)
+      })
+    }
+
+    gameDone = () => {
+      this.calculateWinner()
+      this.setState({
+        showSubmit: true
+      })
+    }
 
     renderGameLogger = () => {
       if (this.props.match) {
@@ -447,7 +504,14 @@ class GameLogger extends Component {
               />
             </div>
             <div>
-              <Button content='test' onClick={this.checkState}/>
+              { this.state.showSubmit ?
+                <Button
+                content='Submit'
+                onClick={this.matchSubmit} /> :
+                <Button
+                content='Game Complete?'
+                onClick={this.gameDone} />
+              }
             </div>
           </div>
         )
@@ -466,6 +530,22 @@ class GameLogger extends Component {
     )
   }
 }
+
+// const Submit = () => (
+//   <div>
+//     <Button
+//       content='Submit'
+//       onClick={this.matchSubmit} />
+//   </div>
+// )
+//
+// const GameComplete = () => (
+//   <div>
+//     <Button
+//       content='Game Complete?'
+//       onClick={this.gameDone} />
+//   </div>
+// )
 
 const mapStateToProps = state => {
   return {
