@@ -76,6 +76,30 @@ class GameLogger extends Component {
       })
     }
 
+    onHomePlayerOneSelect = (event, data) => {
+      this.setState({
+        home_player_one_id: data.value
+      })
+    }
+
+    onHomePlayerTwoSelect = (event, data) => {
+      this.setState({
+        home_player_two_id: data.value
+      })
+    }
+
+    onAwayPlayerOneSelect = (event, data) => {
+      this.setState({
+        away_player_one_id: data.value
+      })
+    }
+
+    onAwayPlayerTwoSelect = (event, data) => {
+      this.setState({
+        away_player_two_id: data.value
+      })
+    }
+
     updateYellowInputValue = (event, data) => {
       this.setState({
         yellowInputValue: parseInt(data.value)
@@ -231,7 +255,7 @@ class GameLogger extends Component {
                           text: player.attributes.first_name + ' ' + player.attributes.last_name,
                           value: player.attributes.id}
                       })}
-                      value=''>
+                      value={this.state.home_player_one_id}>
                     </Dropdown>
                       <br></br>
                     <Dropdown
@@ -244,7 +268,7 @@ class GameLogger extends Component {
                           text: player.attributes.first_name + ' ' + player.attributes.last_name,
                           value: player.attributes.id}
                       })}
-                      value=''>
+                      value={this.state.home_player_two_id}>
                     </Dropdown>
                   </Form.Field>
                 </Form>
@@ -256,27 +280,27 @@ class GameLogger extends Component {
                     <Dropdown
                       placeholder='Choose Opponent'
                       selection
-                      onChange={this.onHomePlayerTwoSelect}
+                      onChange={this.onAwayPlayerOneSelect}
                       options={this.state.awayTeam.map(player => {
                         return {
                           key: player.attributes.first_name + ' ' + player.attributes.last_name,
                           text: player.attributes.first_name + ' ' + player.attributes.last_name,
                           value: player.attributes.id}
                       })}
-                      value=''>
+                      value={this.state.away_player_one_id}>
                     </Dropdown>
                       <br></br>
                     <Dropdown
                       placeholder='Choose Opponent'
                       selection
-                      onChange={this.onHomePlayerTwoSelect}
+                      onChange={this.onAwayPlayerTwoSelect}
                       options={this.state.awayTeam.map(player => {
                         return {
                           key: player.attributes.first_name + ' ' + player.attributes.last_name,
                           text: player.attributes.first_name + ' ' + player.attributes.last_name,
                           value: player.attributes.id}
                       })}
-                      value=''>
+                      value={this.state.away_player_two_id}>
                     </Dropdown>
                   </Form.Field>
                 </Form>
