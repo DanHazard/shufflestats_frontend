@@ -18,6 +18,15 @@ class GameLogger extends Component {
       home_player_two_id: 0,
       away_player_one_id: 0,
       away_player_two_id: 0,
+      home_player_one_score: 0,
+      home_player_two_score: 0,
+      away_player_one_score: 0,
+      away_player_two_score: 0,
+      home_player_one_frames_played: 0,
+      home_player_two_frames_played: 0,
+      away_player_one_frames_played: 0,
+      away_player_two_frames_played: 0,
+      match_winner_id: 0,
       currYellowFrame: 1,
       currBlackFrame: 1,
       yellowScore: 0,
@@ -112,6 +121,8 @@ class GameLogger extends Component {
         this.setState({
           yframe1: this.state.yellowInputValue,
           currYellowFrame: this.state.currYellowFrame + 1,
+          home_player_one_score: this.state.yellowInputValue,
+          home_player_one_frames_played: 1,
           yellowInputValue: ''
         })
       }
@@ -119,6 +130,8 @@ class GameLogger extends Component {
         this.setState({
           yframe2: this.state.yframe1 + this.state.yellowInputValue,
           currYellowFrame: this.state.currYellowFrame + 1,
+          home_player_two_score: this.state.yellowInputValue,
+          home_player_two_frames_played: 1,
           yellowInputValue: ''
         })
       }
@@ -126,6 +139,8 @@ class GameLogger extends Component {
         this.setState({
           yframe3: this.state.yframe2 + this.state.yellowInputValue,
           currYellowFrame: this.state.currYellowFrame + 1,
+          home_player_one_score: this.state.home_player_one_score + this.state.yellowInputValue,
+          home_player_one_frames_played: this.state.home_player_one_frames_played + 1,
           yellowInputValue: ''
         })
       }
@@ -133,6 +148,8 @@ class GameLogger extends Component {
         this.setState({
           yframe4: this.state.yframe3 + this.state.yellowInputValue,
           currYellowFrame: this.state.currYellowFrame + 1,
+          home_player_two_score: this.state.home_player_two_score + this.state.yellowInputValue,
+          home_player_two_frames_played: this.state.home_player_two_frames_played + 1,
           yellowInputValue: ''
         })
       }
@@ -140,6 +157,8 @@ class GameLogger extends Component {
         this.setState({
           yframe5: this.state.yframe4 + this.state.yellowInputValue,
           currYellowFrame: this.state.currYellowFrame + 1,
+          home_player_one_score: this.state.home_player_one_score + this.state.yellowInputValue,
+          home_player_one_frames_played: this.state.home_player_one_frames_played + 1,
           yellowInputValue: ''
         })
       }
@@ -147,6 +166,8 @@ class GameLogger extends Component {
         this.setState({
           yframe6: this.state.yframe5 + this.state.yellowInputValue,
           currYellowFrame: this.state.currYellowFrame + 1,
+          home_player_two_score: this.state.home_player_two_score + this.state.yellowInputValue,
+          home_player_two_frames_played: this.state.home_player_two_frames_played + 1,
           yellowInputValue: ''
         })
       }
@@ -154,6 +175,8 @@ class GameLogger extends Component {
         this.setState({
           yframe7: this.state.yframe6 + this.state.yellowInputValue,
           currYellowFrame: this.state.currYellowFrame + 1,
+          home_player_one_score: this.state.home_player_one_score + this.state.yellowInputValue,
+          home_player_one_frames_played: this.state.home_player_one_frames_played + 1,
           yellowInputValue: ''
         })
       }
@@ -161,6 +184,8 @@ class GameLogger extends Component {
         this.setState({
           yframe8: this.state.yframe7 + this.state.yellowInputValue,
           currYellowFrame: this.state.currYellowFrame + 1,
+          home_player_two_score: this.state.home_player_two_score + this.state.yellowInputValue,
+          home_player_two_frames_played: this.state.home_player_two_frames_played + 1,
           yellowInputValue: ''
         })
       }
@@ -177,6 +202,8 @@ class GameLogger extends Component {
         this.setState({
           bframe1: this.state.blackInputValue,
           currBlackFrame: this.state.currBlackFrame + 1,
+          away_player_one_score: this.state.blackInputValue,
+          away_player_one_frames_played: 1,
           blackInputValue: ''
         })
       }
@@ -184,6 +211,8 @@ class GameLogger extends Component {
         this.setState({
           bframe2: this.state.bframe1 + this.state.blackInputValue,
           currBlackFrame: this.state.currBlackFrame + 1,
+          away_player_two_score: this.state.blackInputValue,
+          away_player_two_frames_played: 1,
           blackInputValue: ''
         })
       }
@@ -191,6 +220,8 @@ class GameLogger extends Component {
         this.setState({
           bframe3: this.state.bframe2 + this.state.blackInputValue,
           currBlackFrame: this.state.currBlackFrame + 1,
+          away_player_one_score: this.state.away_player_one_score + this.state.blackInputValue,
+          away_player_one_frames_played: this.state.away_player_one_frames_played1,
           blackInputValue: ''
         })
       }
@@ -198,6 +229,8 @@ class GameLogger extends Component {
         this.setState({
           bframe4: this.state.bframe3 + this.state.blackInputValue,
           currBlackFrame: this.state.currBlackFrame + 1,
+          away_player_two_score: this.state.away_player_two_score + this.state.blackInputValue,
+          away_player_two_frames_played: this.state.away_player_two_frames_played + 1,
           blackInputValue: ''
         })
       }
@@ -205,6 +238,8 @@ class GameLogger extends Component {
         this.setState({
           bframe5: this.state.bframe4 + this.state.blackInputValue,
           currBlackFrame: this.state.currBlackFrame + 1,
+          away_player_one_score: this.state.away_player_one_score + this.state.blackInputValue,
+          away_player_one_frames_played: this.state.away_player_one_frames_played1,
           blackInputValue: ''
         })
       }
@@ -212,6 +247,8 @@ class GameLogger extends Component {
         this.setState({
           bframe6: this.state.bframe5 + this.state.blackInputValue,
           currBlackFrame: this.state.currBlackFrame + 1,
+          away_player_two_score: this.state.away_player_two_score + this.state.blackInputValue,
+          away_player_two_frames_played: this.state.away_player_two_frames_played + 1,
           blackInputValue: ''
         })
       }
@@ -219,6 +256,8 @@ class GameLogger extends Component {
         this.setState({
           bframe7: this.state.bframe6 + this.state.blackInputValue,
           currBlackFrame: this.state.currBlackFrame + 1,
+          away_player_one_score: this.state.away_player_one_score + this.state.blackInputValue,
+          away_player_one_frames_played: this.state.away_player_one_frames_played1,
           blackInputValue: ''
         })
       }
@@ -226,6 +265,8 @@ class GameLogger extends Component {
         this.setState({
           bframe8: this.state.bframe7 + this.state.blackInputValue,
           currBlackFrame: this.state.currBlackFrame + 1,
+          away_player_two_score: this.state.away_player_two_score + this.state.blackInputValue,
+          away_player_two_frames_played: this.state.away_player_two_frames_played + 1,
           blackInputValue: ''
         })
       }
