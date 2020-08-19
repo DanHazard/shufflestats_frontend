@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Card, Table, Header, Button, Dropdown } from 'semantic-ui-react'
 import { currentPlayer } from '../actions/player'
+import { createGameSuccess } from '../actions/game'
+import { createMatchSuccess } from '../actions/match'
 
 
 
@@ -87,6 +89,8 @@ class PlayerDashboard extends Component {
     fetch('http://localhost:3001/games', reqObj)
     .then(resp => resp.json())
     .then(data => {
+      console.log(data.data.attributes)
+      this.props.createGameSuccess(data.data.attributes)
       const reqObj = {
         method: 'POST',
         headers: {
@@ -101,7 +105,10 @@ class PlayerDashboard extends Component {
       }
       fetch('http://localhost:3001/matches', reqObj)
       .then(resp => resp.json())
-      .then(data = console.log(data))
+      .then(data => {
+        console.log(data)
+        this.props.createMatchSuccess(data.data.attributes)
+      })
     })
   }
 
@@ -229,11 +236,15 @@ class PlayerDashboard extends Component {
 
 
 const mapStateToProps = state => {
-  return {player: state.player}
+  return {
+    player: state.player
+  }
 }
 
 const mapDispatchToProps = {
-  currentPlayer
+  currentPlayer,
+  createGameSuccess,
+  createMatchSuccess
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlayerDashboard)

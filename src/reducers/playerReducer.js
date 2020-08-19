@@ -1,5 +1,3 @@
-
-
 export default function playerReducer(state = null, action) {
   switch (action.type) {
     case 'LOGIN_PLAYER':
