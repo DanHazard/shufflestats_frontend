@@ -66,9 +66,14 @@
 
 .table-container {
   width: 75%;
-  margin: auto;
+  padding-left: 75px;
+}
+
+.game-input-container{
+  padding-top: 20px;
+  padding-right: 185px;
 }
 
 .game-log-container {
-  padding: 20px;
+  padding-left: 100px;
 }

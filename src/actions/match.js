@@ -11,3 +11,17 @@ export const createMatchSuccess = newMatch => {
     newMatch
   }
 }
+
+export const currentMatch = currentMatch => {
+  return {
+    type: 'CURRENT_MATCH',
+    currentMatch
+  }
+}
+
+export const updateMatch = updateMatch => {
+  return {
+    type: 'UPDATE_MATCH',
+    updateMatch
+  }
+}

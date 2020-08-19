@@ -3,7 +3,11 @@ export default function matchReducer(state = null, action) {
     case 'FETCH_MATCH_SUCCESS':
       return action.match
     case 'CREATE_MATCH_SUCCESS':
-      return action.match
+      return action.newMatch
+    case 'CURRENT_MATCH':
+      return action.currentMatch
+    case 'UPDATE_MATCH':
+      return action.updateMatch
     default:
       return state
   }

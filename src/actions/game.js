@@ -11,3 +11,17 @@ export const createGameSuccess = newGame => {
     newGame
   }
 }
+
+export const currentGame = currentGame => {
+  return {
+    type: 'CURRENT_GAME',
+    currentGame
+  }
+}
+
+export const updateGame = updateGame => {
+  return {
+    type: 'UPDATE_GAME',
+    updateGame
+  }
+}
