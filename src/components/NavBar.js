@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Input, Menu, Button } from 'semantic-ui-react'
+import { Input, Menu, Button, Image } from 'semantic-ui-react'
 import { NavLink, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logoutPlayer } from '../actions/player'
+import logo from '../images/shuffle_stats_logo.png'
 
 class NavBar extends Component {
   state = {
@@ -23,16 +24,21 @@ class NavBar extends Component {
 
     return (
       <div>
-        <Menu pointing>
+        <Menu color='teal' inverted pointing>
+
           <Menu.Item
             as={NavLink} to='/dashboard'
             name='dashboard'
             active={activeItem === 'dashboard'}
             onClick={this.handleItemClick}>
           </Menu.Item>
+          <div className='nav-bar-logo'>
+            <img src={logo} style={{width: '100px', height: '50px'}}/>
+          </div>
           <Menu.Item position='right'>
             <Button as={NavLink} to='/login' onClick={this.handleLogout}>Logout</Button>
           </Menu.Item>
+
         </Menu>
       </div>
     )

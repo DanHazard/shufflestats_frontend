@@ -6,6 +6,7 @@ import { Card, Table, Header, Button, Form, Dropdown, Input } from 'semantic-ui-
 import { currentPlayer } from '../actions/player'
 import { currentGame, updateGame } from '../actions/game'
 import { currentMatch, updateMatch } from '../actions/match'
+import bgImg from '../images/ShuffleStats_BG.png'
 
 class GameLogger extends Component {
 
@@ -292,9 +293,6 @@ class GameLogger extends Component {
 
     matchSubmit = () => {
       console.log(this.state)
-      this.setState({
-        showSubmit: false
-      })
       const reqObj = {
         method: 'PATCH',
         headers: {
@@ -324,7 +322,9 @@ class GameLogger extends Component {
       .then(resp => resp.json())
       .then(data => {
         console.log(data)
+        this.props.history.push('/dashboard')
       })
+
     }
 
     gameDone = () => {
@@ -503,12 +503,14 @@ class GameLogger extends Component {
                 onClick={this.handleBlackClick}
               />
             </div>
-            <div>
+            <div className='log-submit-button'>
               { this.state.showSubmit ?
                 <Button
+                color='teal'
                 content='Submit'
                 onClick={this.matchSubmit} /> :
                 <Button
+                color='teal'
                 content='Game Complete?'
                 onClick={this.gameDone} />
               }
@@ -525,6 +527,7 @@ class GameLogger extends Component {
   render() {
   return (
     <div className='logger-container'>
+      <img src={bgImg} className='bg' />
       {this.renderGameLogger()}
     </div>
     )

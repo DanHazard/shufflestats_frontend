@@ -2,10 +2,12 @@ import React, { Component } from 'react'
 import { NavLink } from 'react-router-dom'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Card, Table, Header, Button, Dropdown } from 'semantic-ui-react'
+import { Card, Table, Header, Button, Dropdown, Image } from 'semantic-ui-react'
 import { currentPlayer } from '../actions/player'
 import { createGameSuccess } from '../actions/game'
 import { createMatchSuccess } from '../actions/match'
+import bgImg from '../images/ShuffleStats_BG.png'
+import buttonImg from '../images/Shufflegram_vector2.svg'
 
 
 
@@ -108,6 +110,7 @@ class PlayerDashboard extends Component {
       .then(data => {
         console.log(data)
         this.props.createMatchSuccess(data.data.attributes)
+        this.props.history.push('/game')
       })
     })
   }
@@ -117,7 +120,9 @@ class PlayerDashboard extends Component {
       console.log(this.state)
       return (
         <div>
-          <Header textAlign="center" as='h1' style={{padding:"100px"}}>Welcome {this.props.player.first_name}!</Header>
+          <div className='log-header'>
+          <Header textAlign="center" as='h1'>Welcome {this.props.player.first_name}!</Header>
+          </div>
           <Card.Group centered style={{margin: 'auto'}}>
             <Card color='teal'>
               <Card.Content>
@@ -208,11 +213,11 @@ class PlayerDashboard extends Component {
               style={{margin:'20px'}}
               color='teal'
               size='huge'
-              animated='vertical'
-              as={NavLink}
-              to='/game'
+              animated='fade'
               onClick={this.handleClick}>
-                <Button.Content visible>Shuffle Icon</Button.Content>
+                <Button.Content visible>
+                  <Image src={buttonImg} style={{height: '40px', width: '40px'}}/>
+                </Button.Content>
                 <Button.Content hidden>Log Game!</Button.Content>
             </Button>
           </div>
@@ -227,7 +232,8 @@ class PlayerDashboard extends Component {
 
   render() {
   return(
-      <div className='PlayerDashboard' style={{backgroundColor:'ghostwhite', padding:'100px'}}>
+      <div className='PlayerDashboard'>
+        <img src={bgImg} className='bg' />
         {this.renderPlayerData()}
       </div>
     )
