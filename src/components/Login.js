@@ -69,6 +69,8 @@ class Login extends Component {
             <Grid.Column textAlign="center">
               <Button type="submit" color="blue">Log In</Button>
               <br></br>
+              <br></br>
+              <br></br>
               <NavLink className="App-link" to="/sign_up" exact>Sign Up To Create An Account</NavLink>
             </Grid.Column>
           </Grid>

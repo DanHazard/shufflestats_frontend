@@ -3,11 +3,13 @@ import { Input, Menu, Button, Image } from 'semantic-ui-react'
 import { NavLink, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logoutPlayer } from '../actions/player'
-import logo from '../images/shuffle_stats_logo.png'
+import logo from '../images/shuffle_stats_logo3.png'
+import filler from '../images/navfiller.png'
+
 
 class NavBar extends Component {
   state = {
-    activeItem: 'dashboard'
+    activeItem: ''
   }
 
   handleItemClick = (event, { name }) => {
@@ -25,7 +27,9 @@ class NavBar extends Component {
     return (
       <div>
         <Menu color='teal' inverted pointing>
-
+        <div className='dashboard-icon'>
+          <img src={filler} style={{width: '675px', height: '50px'}}/>
+        </div>
           <Menu.Item
             as={NavLink} to='/dashboard'
             name='dashboard'
@@ -35,6 +39,12 @@ class NavBar extends Component {
           <div className='nav-bar-logo'>
             <img src={logo} style={{width: '100px', height: '50px'}}/>
           </div>
+          <Menu.Item
+            name='game_log'
+            active={activeItem === 'game_log'}
+            onClick={this.handleItemClick}>
+          </Menu.Item>
+
           <Menu.Item position='right'>
             <Button as={NavLink} to='/login' onClick={this.handleLogout}>Logout</Button>
           </Menu.Item>

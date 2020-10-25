@@ -45,9 +45,32 @@ body {
   }
 }
 
+.vsIcon {
+  padding-top: 25px;
+}
+
+.vsHome {
+  padding-top: 37px;
+  padding-right: 10px;
+}
+
+.vsAway {
+  padding-top: 37px;
+  padding-left: 10px;
+}
+
+.vsHeader {
+  padding-top: 20px;
+  padding-left: 45px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
 .nav-bar-logo {
   padding-top: 10px;
-  padding-left: 725px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .log-in {
@@ -101,7 +124,7 @@ img.bg {
   width: 75%;
   margin: auto;
   padding-left: 200px;
-  padding-top: 50px;
+  padding-top: 20px;
 }
 
 .table-container {
@@ -110,7 +133,7 @@ img.bg {
 }
 
 .log-submit-button {
-  padding-top: 10px;
+  padding-top: 30px;
   padding-right: 175px;
 }
 

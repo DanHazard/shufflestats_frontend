@@ -7,6 +7,7 @@ import { currentPlayer } from '../actions/player'
 import { currentGame, updateGame } from '../actions/game'
 import { currentMatch, updateMatch } from '../actions/match'
 import bgImg from '../images/ShuffleStats_BG.png'
+import tnb from '../images/tangs_n_biscuit_white.png'
 
 class GameLogger extends Component {
 
@@ -16,6 +17,8 @@ class GameLogger extends Component {
       showSubmit: false,
       homeTeam: [],
       awayTeam: [],
+      homePlayers: [],
+      awayPlayers: [],
       home_player_one_id: 0,
       home_player_two_id: 0,
       away_player_one_id: 0,
@@ -72,6 +75,7 @@ class GameLogger extends Component {
           this.props.currentPlayer(data.player.data.attributes)
         })
         await this.getPlayersData()
+        this.getTeamData()
       }
     }
 
@@ -79,11 +83,24 @@ class GameLogger extends Component {
       fetch('http://localhost:3001/players/')
       .then(resp => resp.json())
       .then(players => {
-        let homeTeam = players.data.filter(player => player.attributes.team_id === this.props.match.home_team_id)
-        let awayTeam = players.data.filter(player => player.attributes.team_id === this.props.match.away_team_id)
+        let homePlayers = players.data.filter(player => player.attributes.team_id === this.props.match.home_team_id)
+        let awayPlayers = players.data.filter(player => player.attributes.team_id === this.props.match.away_team_id)
         this.setState({
-          homeTeam: homeTeam,
-          awayTeam: awayTeam
+          homePlayers: homePlayers,
+          awayPlayers: awayPlayers
+        })
+      })
+    }
+
+    getTeamData = () => {
+      fetch('http://localhost:3001/teams/')
+      .then(resp => resp.json())
+      .then(teams => {
+        let homeTeam = teams.data.filter(team => team.attributes.id === this.props.match.home_team_id)
+        let awayTeam = teams.data.filter(team => team.attributes.id === this.props.match.away_team_id)
+        this.setState({
+          homeTeam: homeTeam[0].attributes.team_name,
+          awayTeam: awayTeam[0].attributes.team_name
         })
       })
     }
@@ -334,20 +351,33 @@ class GameLogger extends Component {
       })
     }
 
+    renderMatchHeader = () => {
+      if (this.props.match) {
+        return (
+          <div className='vsHeader'>
+            <div className='vsHome'><h2>{this.state.homeTeam}</h2></div>
+            <div className='vsIcon'><img src={tnb} style={{width: '50px', height: '50px'}}/></div>
+            <div className='vsAway'><h2>{this.state.awayTeam}</h2></div>
+          </div>
+        )
+      }
+    }
+
     renderGameLogger = () => {
       if (this.props.match) {
         return (
+
           <div className='game-container'>
             <div className='flex-container' style={{padding:'20px'}}>
               <div className='flex-child'>
                 <Form>
                   <Form.Field width={10}>
-                  <label>Team Name</label>
+                  <label>{this.state.homeTeam}</label>
                     <Dropdown
                       placeholder='Choose Opponent'
                       selection
                       onChange={this.onHomePlayerOneSelect}
-                      options={this.state.homeTeam.map(player => {
+                      options={this.state.homePlayers.map(player => {
                         return {
                           key: player.attributes.first_name + ' ' + player.attributes.last_name,
                           text: player.attributes.first_name + ' ' + player.attributes.last_name,
@@ -360,7 +390,7 @@ class GameLogger extends Component {
                       placeholder='Choose Opponent'
                       selection
                       onChange={this.onHomePlayerTwoSelect}
-                      options={this.state.homeTeam.map(player => {
+                      options={this.state.homePlayers.map(player => {
                         return {
                           key: player.attributes.first_name + ' ' + player.attributes.last_name,
                           text: player.attributes.first_name + ' ' + player.attributes.last_name,
@@ -374,12 +404,12 @@ class GameLogger extends Component {
               <div className='flex-child'>
                 <Form>
                   <Form.Field width={10}>
-                  <label>Team Name</label>
+                  <label>{this.state.awayTeam}</label>
                     <Dropdown
                       placeholder='Choose Opponent'
                       selection
                       onChange={this.onAwayPlayerOneSelect}
-                      options={this.state.awayTeam.map(player => {
+                      options={this.state.awayPlayers.map(player => {
                         return {
                           key: player.attributes.first_name + ' ' + player.attributes.last_name,
                           text: player.attributes.first_name + ' ' + player.attributes.last_name,
@@ -392,7 +422,7 @@ class GameLogger extends Component {
                       placeholder='Choose Opponent'
                       selection
                       onChange={this.onAwayPlayerTwoSelect}
-                      options={this.state.awayTeam.map(player => {
+                      options={this.state.awayPlayers.map(player => {
                         return {
                           key: player.attributes.first_name + ' ' + player.attributes.last_name,
                           text: player.attributes.first_name + ' ' + player.attributes.last_name,
@@ -408,8 +438,8 @@ class GameLogger extends Component {
               <Table celled striped color='teal'>
                 <Table.Header>
                   <Table.Row>
-                    <Table.HeaderCell textAlign='center'>Yellow</Table.HeaderCell>
-                    <Table.HeaderCell textAlign='center'>Black</Table.HeaderCell>
+                    <Table.HeaderCell textAlign='center' width={3}>Yellow</Table.HeaderCell>
+                    <Table.HeaderCell textAlign='center' width={3}>Black</Table.HeaderCell>
                   </Table.Row>
                 </Table.Header>
 
@@ -483,13 +513,14 @@ class GameLogger extends Component {
             </div>
             <div className='game-input-container'>
               <Button
+                style={{margin: '0px'}}
                 color='yellow'
                 content='Update'
                 onClick={this.handleYellowClick}
               />
               <Input
                 placeholder='Yellow Score'
-                value={this.state.yellowInputValue}
+                value={isNaN(this.state.yellowInputValue) ? '-' : this.state.yellowInputValue}
                 onChange={this.updateYellowInputValue}
               />
               <Input
@@ -528,27 +559,13 @@ class GameLogger extends Component {
   return (
     <div className='logger-container'>
       <img src={bgImg} className='bg' />
+      {this.renderMatchHeader()}
       {this.renderGameLogger()}
     </div>
     )
   }
 }
 
-// const Submit = () => (
-//   <div>
-//     <Button
-//       content='Submit'
-//       onClick={this.matchSubmit} />
-//   </div>
-// )
-//
-// const GameComplete = () => (
-//   <div>
-//     <Button
-//       content='Game Complete?'
-//       onClick={this.gameDone} />
-//   </div>
-// )
 
 const mapStateToProps = state => {
   return {
