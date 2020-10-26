@@ -122,7 +122,7 @@ class PlayerDashboard extends Component {
       return (
         <div>
           <div className='log-header'>
-          <Header textAlign="center" as='h1'>Welcome {this.props.player.first_name}!</Header>
+          <Header textAlign="center" as='h1'>Match Results!</Header>
           <div className='dashboard-icon'>
             <img src={tnb} style={{width: '50px', height: '50px'}}/>
           </div>
@@ -193,6 +193,37 @@ class PlayerDashboard extends Component {
                   <Table.Row>
                     <Table.Cell collapsing>Total Points Allowed</Table.Cell>
                     <Table.Cell collapsing>{this.state.playerTeam.total_points_allowed}</Table.Cell>
+                  </Table.Row>
+                </Table.Body>
+              </Table>
+            </Card.Content>
+            </Card>
+            <Card color='teal'>
+              <Card.Content>
+              <Table celled striped color='teal' verticalAlign='middle'>
+                <Table.Header>
+                  <Table.Row>
+                    <Table.HeaderCell>{this.state.playerTeam.team_name} Season Stats</Table.HeaderCell>
+                    <Table.HeaderCell></Table.HeaderCell>
+                  </Table.Row>
+                </Table.Header>
+
+                <Table.Body>
+                  <Table.Row>
+                    <Table.Cell collapsing>Match Score</Table.Cell>
+                    <Table.Cell collapsing>Score</Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell collapsing>HTS</Table.Cell>
+                    <Table.Cell collapsing>Home Team Score</Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell collapsing>ATS</Table.Cell>
+                    <Table.Cell collapsing>Away Team Score</Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell collapsing>TMP</Table.Cell>
+                    <Table.Cell collapsing>Total Match Points</Table.Cell>
                   </Table.Row>
                 </Table.Body>
               </Table>

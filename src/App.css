@@ -1,3 +1,11 @@
+body {
+  background: url('/images/ShuffleStats_BG.png') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 .App {
   text-align: center;
 }
@@ -37,9 +45,64 @@
   }
 }
 
+.vsIcon {
+  padding-top: 25px;
+}
+
+.vsHome {
+  padding-top: 37px;
+  padding-right: 10px;
+}
+
+.vsAway {
+  padding-top: 37px;
+  padding-left: 10px;
+}
+
+.vsHeader {
+  padding-top: 20px;
+  padding-left: 45px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.nav-bar-logo {
+  padding-top: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
 .log-in {
   display: flex !important;
   justify-content: center;
+}
+
+.login-container {
+  padding-top: 100px;
+}
+
+.logo {
+  transition: all 0.25s ease-in-out;
+  padding-left: 105px;
+}
+
+.logo:hover {
+  transform: scale(1.2);
+  transition: all 0.25s ease-in-out;
+}
+
+img.bg {
+  min-height: 100%;
+  min-width: 1024px;
+
+  width: 100%;
+  height: auto;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
 }
 
 .stats_container {
@@ -61,7 +124,7 @@
   width: 75%;
   margin: auto;
   padding-left: 200px;
-  padding-top: 50px;
+  padding-top: 20px;
 }
 
 .table-container {
@@ -69,11 +132,21 @@
   padding-left: 75px;
 }
 
+.log-submit-button {
+  padding-top: 30px;
+  padding-right: 175px;
+}
+
 .game-input-container{
   padding-top: 20px;
   padding-right: 185px;
 }
 
+.log-header {
+  padding-top: 100px;
+  padding-bottom: 25px;
+}
+
 .game-log-container {
-  padding-left: 100px;
+  padding-left: 0px;
 }

@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { Header, Form, Button, Grid } from 'semantic-ui-react'
+import { Header, Form, Button, Grid, Image } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { loginPlayer } from '../actions/player'
+import imgVar from '../images/ShuffleStats_BG.png'
+import headerImg from '../images/shuffle_stats_logo.png'
 
 
 class Login extends Component {
@@ -49,7 +51,10 @@ class Login extends Component {
   render() {
     return (
       <div className="login-container" >
-        <Header textAlign="center" as='h1'>Shuffle Stats!</Header>
+        <img src={imgVar} className='bg' />
+        <div className='logo'>
+          <img src={headerImg} style={{width: 'auto', height: 'auto'}}/>
+        </div>
         <Form onSubmit={this.handleSubmit} style={{width: "25%", margin: "auto", padding: "20px"}}>
           <Header textAlign="center" as='h3'>Please Sign In</Header>
           <Form.Field>
@@ -63,6 +68,8 @@ class Login extends Component {
           <Grid>
             <Grid.Column textAlign="center">
               <Button type="submit" color="blue">Log In</Button>
+              <br></br>
+              <br></br>
               <br></br>
               <NavLink className="App-link" to="/sign_up" exact>Sign Up To Create An Account</NavLink>
             </Grid.Column>

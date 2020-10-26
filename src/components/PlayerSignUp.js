@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { Redirect, NavLink } from 'react-router-dom'
 import { loginPlayer } from '../actions/player'
+import { Header, Form, Button, Grid, Image } from 'semantic-ui-react'
+import imgVar from '../images/ShuffleStats_BG.png'
+import headerImg from '../images/shuffle_stats_logo.png'
 
 const API = "http://localhost:3001/api/v1/users"
 
@@ -11,6 +14,7 @@ class SignUp extends Component {
     this.state = {
       first_name: '',
       last_name: '',
+      team_name: '',
       password: '',
       email: '',
       errorMessage: '',
@@ -75,34 +79,47 @@ class SignUp extends Component {
         return <Redirect to={this.state.redirect} />
     }
     return (
-      <form id="sign-up" className="ui error form" onSubmit={this.handleSubmit}>
-        <h1>Fill Out All Fields To Create Your Account:</h1>
-        {this.state.errorMessage ?
-        <div className="ui error message">
-          <div className="content">
-            <p>{this.state.errorMessage}</p>
-          </div>
+      <div>
+      <div className="login-container" >
+        <img src={imgVar} className='bg' />
+        <div className='logo'>
+          <img src={headerImg} style={{width: 'auto', height: 'auto'}}/>
         </div>
-        :
-        null}
-        <div className="field">
-          <label>First Name:</label>
-          <input onChange={this.handleChange} type="text" name="first_name" value={this.state.first_name} placeholder="first_name" />
-        </div>
-        <div className="field">
-          <label>Last Name:</label>
-          <input onChange={this.handleChange} type="text" name="last_name" value={this.state.last_name} placeholder="last_name" />
-        </div>
-        <div className="field">
-          <label>Password:</label>
-          <input onChange={this.handleChange} type="password" name="password" value={this.state.password} placeholder="password" />
-        </div>
-        <div className="field">
-          <label>Email address:</label>
-          <input onChange={this.handleChange} type="text" name="email" value={this.state.email} placeholder="email" />
-        </div>
-        <button type="submit" className="ui button">Submit</button>
-      </form>
+        <Form onSubmit={this.handleSubmit} style={{width: "25%", margin: "auto", padding: "20px"}}>
+          <Header textAlign="center" as='h3'>Please Sign In</Header>
+          <Form.Field>
+            <label>First Name</label>
+            <input value={this.state.password} name="password" onChange={this.handleChange} type="password" />
+          </Form.Field>
+          <Form.Field>
+            <label>Last Name</label>
+            <input value={this.state.password} name="password" onChange={this.handleChange} type="password" />
+          </Form.Field>
+          <Form.Field>
+            <label>Team</label>
+            <input value={this.state.password} name="password" onChange={this.handleChange} type="password" />
+          </Form.Field>
+          <Form.Field>
+            <label>Email</label>
+            <input value={this.state.email} name="email" onChange={this.handleChange}/>
+          </Form.Field>
+          <Form.Field>
+            <label>Password</label>
+            <input value={this.state.password} name="password" onChange={this.handleChange} type="password" />
+          </Form.Field>
+          <Grid>
+            <Grid.Column textAlign="center">
+              <Button type="submit" color="blue">Log In</Button>
+              <br></br>
+              <br></br>
+              <NavLink className="App-link" to="/login" exact>Already Have An Account?  Login Here!</NavLink>
+            </Grid.Column>
+          </Grid>
+        </Form>
+        <br></br>
+        <br></br>
+      </div>
+      </div>
     )
   }
 }

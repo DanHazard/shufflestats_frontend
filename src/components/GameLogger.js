@@ -6,14 +6,19 @@ import { Card, Table, Header, Button, Form, Dropdown, Input } from 'semantic-ui-
 import { currentPlayer } from '../actions/player'
 import { currentGame, updateGame } from '../actions/game'
 import { currentMatch, updateMatch } from '../actions/match'
+import bgImg from '../images/ShuffleStats_BG.png'
+import tnb from '../images/tangs_n_biscuit_white.png'
 
 class GameLogger extends Component {
 
   constructor() {
     super()
     this.state = {
+      showSubmit: false,
       homeTeam: [],
       awayTeam: [],
+      homePlayers: [],
+      awayPlayers: [],
       home_player_one_id: 0,
       home_player_two_id: 0,
       away_player_one_id: 0,
@@ -27,10 +32,11 @@ class GameLogger extends Component {
       away_player_one_frames_played: 0,
       away_player_two_frames_played: 0,
       match_winner_id: 0,
-      currYellowFrame: 1,
-      currBlackFrame: 1,
+      match_loser_id: 0,
       yellowScore: 0,
       blackScore: 0,
+      currYellowFrame: 1,
+      currBlackFrame: 1,
       yellowInputValue: '',
       blackInputValue: '',
       yframe1: 0,
@@ -69,6 +75,7 @@ class GameLogger extends Component {
           this.props.currentPlayer(data.player.data.attributes)
         })
         await this.getPlayersData()
+        this.getTeamData()
       }
     }
 
@@ -76,11 +83,24 @@ class GameLogger extends Component {
       fetch('http://localhost:3001/players/')
       .then(resp => resp.json())
       .then(players => {
-        let homeTeam = players.data.filter(player => player.attributes.team_id === this.props.match.home_team_id)
-        let awayTeam = players.data.filter(player => player.attributes.team_id === this.props.match.away_team_id)
+        let homePlayers = players.data.filter(player => player.attributes.team_id === this.props.match.home_team_id)
+        let awayPlayers = players.data.filter(player => player.attributes.team_id === this.props.match.away_team_id)
         this.setState({
-          homeTeam: homeTeam,
-          awayTeam: awayTeam
+          homePlayers: homePlayers,
+          awayPlayers: awayPlayers
+        })
+      })
+    }
+
+    getTeamData = () => {
+      fetch('http://localhost:3001/teams/')
+      .then(resp => resp.json())
+      .then(teams => {
+        let homeTeam = teams.data.filter(team => team.attributes.id === this.props.match.home_team_id)
+        let awayTeam = teams.data.filter(team => team.attributes.id === this.props.match.away_team_id)
+        this.setState({
+          homeTeam: homeTeam[0].attributes.team_name,
+          awayTeam: awayTeam[0].attributes.team_name
         })
       })
     }
@@ -183,6 +203,7 @@ class GameLogger extends Component {
       if (this.state.currYellowFrame === 8) {
         this.setState({
           yframe8: this.state.yframe7 + this.state.yellowInputValue,
+          yellowScore: this.state.yframe7 + this.state.yellowInputValue,
           currYellowFrame: this.state.currYellowFrame + 1,
           home_player_two_score: this.state.home_player_two_score + this.state.yellowInputValue,
           home_player_two_frames_played: this.state.home_player_two_frames_played + 1,
@@ -221,7 +242,7 @@ class GameLogger extends Component {
           bframe3: this.state.bframe2 + this.state.blackInputValue,
           currBlackFrame: this.state.currBlackFrame + 1,
           away_player_one_score: this.state.away_player_one_score + this.state.blackInputValue,
-          away_player_one_frames_played: this.state.away_player_one_frames_played1,
+          away_player_one_frames_played: this.state.away_player_one_frames_played + 1,
           blackInputValue: ''
         })
       }
@@ -239,7 +260,7 @@ class GameLogger extends Component {
           bframe5: this.state.bframe4 + this.state.blackInputValue,
           currBlackFrame: this.state.currBlackFrame + 1,
           away_player_one_score: this.state.away_player_one_score + this.state.blackInputValue,
-          away_player_one_frames_played: this.state.away_player_one_frames_played1,
+          away_player_one_frames_played: this.state.away_player_one_frames_played + 1,
           blackInputValue: ''
         })
       }
@@ -257,7 +278,7 @@ class GameLogger extends Component {
           bframe7: this.state.bframe6 + this.state.blackInputValue,
           currBlackFrame: this.state.currBlackFrame + 1,
           away_player_one_score: this.state.away_player_one_score + this.state.blackInputValue,
-          away_player_one_frames_played: this.state.away_player_one_frames_played1,
+          away_player_one_frames_played: this.state.away_player_one_frames_played + 1,
           blackInputValue: ''
         })
       }
@@ -267,30 +288,96 @@ class GameLogger extends Component {
           currBlackFrame: this.state.currBlackFrame + 1,
           away_player_two_score: this.state.away_player_two_score + this.state.blackInputValue,
           away_player_two_frames_played: this.state.away_player_two_frames_played + 1,
+          blackScore: this.state.bframe7 + this.state.blackInputValue,
           blackInputValue: ''
         })
       }
     }
 
-    checkState = () => {
-      console.log(this.state)
+    calculateWinner = () => {
+      if ( this.state.yellowScore > this.state.blackScore ) {
+        this.setState({
+          match_winner_id: this.props.match.home_team_id,
+          match_loser_id: this.props.match.away_team_id
+        })
+      } else {
+        this.setState({
+          match_winner_id: this.props.match.away_team_id,
+          match_loser_id: this.props.match.home_team_id
+        })
+      }
     }
 
+    matchSubmit = () => {
+      console.log(this.state)
+      const reqObj = {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          home_player_one_id: this.state.home_player_one_id,
+          home_player_two_id: this.state.home_player_two_id,
+          away_player_one_id: this.state.away_player_one_id,
+          away_player_two_id: this.state.away_player_two_id,
+          home_player_one_score: this.state.home_player_one_score,
+          home_player_two_score: this.state.home_player_two_score,
+          away_player_one_score: this.state.away_player_one_score,
+          away_player_two_score: this.state.away_player_two_score,
+          home_player_one_frames_played: this.state.home_player_one_frames_played,
+          home_player_two_frames_played: this.state.home_player_two_frames_played,
+          away_player_one_frames_played: this.state.away_player_one_frames_played,
+          away_player_two_frames_played: this.state.away_player_two_frames_played,
+          match_winner_id: this.state.match_winner_id,
+          match_loser_id: this.state.match_loser_id,
+          yellowScore: this.state.yellowScore,
+          blackScore: this.state.blackScore,
+        })
+      }
+      fetch(`http://localhost:3001/matches/${this.props.match.id}`, reqObj)
+      .then(resp => resp.json())
+      .then(data => {
+        console.log(data)
+        this.props.history.push('/dashboard')
+      })
+
+    }
+
+    gameDone = () => {
+      this.calculateWinner()
+      this.setState({
+        showSubmit: true
+      })
+    }
+
+    renderMatchHeader = () => {
+      if (this.props.match) {
+        return (
+          <div className='vsHeader'>
+            <div className='vsHome'><h2>{this.state.homeTeam}</h2></div>
+            <div className='vsIcon'><img src={tnb} style={{width: '50px', height: '50px'}}/></div>
+            <div className='vsAway'><h2>{this.state.awayTeam}</h2></div>
+          </div>
+        )
+      }
+    }
 
     renderGameLogger = () => {
       if (this.props.match) {
         return (
+
           <div className='game-container'>
             <div className='flex-container' style={{padding:'20px'}}>
               <div className='flex-child'>
                 <Form>
                   <Form.Field width={10}>
-                  <label>Team Name</label>
+                  <label>{this.state.homeTeam}</label>
                     <Dropdown
                       placeholder='Choose Opponent'
                       selection
                       onChange={this.onHomePlayerOneSelect}
-                      options={this.state.homeTeam.map(player => {
+                      options={this.state.homePlayers.map(player => {
                         return {
                           key: player.attributes.first_name + ' ' + player.attributes.last_name,
                           text: player.attributes.first_name + ' ' + player.attributes.last_name,
@@ -303,7 +390,7 @@ class GameLogger extends Component {
                       placeholder='Choose Opponent'
                       selection
                       onChange={this.onHomePlayerTwoSelect}
-                      options={this.state.homeTeam.map(player => {
+                      options={this.state.homePlayers.map(player => {
                         return {
                           key: player.attributes.first_name + ' ' + player.attributes.last_name,
                           text: player.attributes.first_name + ' ' + player.attributes.last_name,
@@ -317,12 +404,12 @@ class GameLogger extends Component {
               <div className='flex-child'>
                 <Form>
                   <Form.Field width={10}>
-                  <label>Team Name</label>
+                  <label>{this.state.awayTeam}</label>
                     <Dropdown
                       placeholder='Choose Opponent'
                       selection
                       onChange={this.onAwayPlayerOneSelect}
-                      options={this.state.awayTeam.map(player => {
+                      options={this.state.awayPlayers.map(player => {
                         return {
                           key: player.attributes.first_name + ' ' + player.attributes.last_name,
                           text: player.attributes.first_name + ' ' + player.attributes.last_name,
@@ -335,7 +422,7 @@ class GameLogger extends Component {
                       placeholder='Choose Opponent'
                       selection
                       onChange={this.onAwayPlayerTwoSelect}
-                      options={this.state.awayTeam.map(player => {
+                      options={this.state.awayPlayers.map(player => {
                         return {
                           key: player.attributes.first_name + ' ' + player.attributes.last_name,
                           text: player.attributes.first_name + ' ' + player.attributes.last_name,
@@ -351,8 +438,8 @@ class GameLogger extends Component {
               <Table celled striped color='teal'>
                 <Table.Header>
                   <Table.Row>
-                    <Table.HeaderCell textAlign='center'>Yellow</Table.HeaderCell>
-                    <Table.HeaderCell textAlign='center'>Black</Table.HeaderCell>
+                    <Table.HeaderCell textAlign='center' width={3}>Yellow</Table.HeaderCell>
+                    <Table.HeaderCell textAlign='center' width={3}>Black</Table.HeaderCell>
                   </Table.Row>
                 </Table.Header>
 
@@ -426,13 +513,14 @@ class GameLogger extends Component {
             </div>
             <div className='game-input-container'>
               <Button
+                style={{margin: '0px'}}
                 color='yellow'
                 content='Update'
                 onClick={this.handleYellowClick}
               />
               <Input
                 placeholder='Yellow Score'
-                value={this.state.yellowInputValue}
+                value={isNaN(this.state.yellowInputValue) ? '-' : this.state.yellowInputValue}
                 onChange={this.updateYellowInputValue}
               />
               <Input
@@ -446,8 +534,17 @@ class GameLogger extends Component {
                 onClick={this.handleBlackClick}
               />
             </div>
-            <div>
-              <Button content='test' onClick={this.checkState}/>
+            <div className='log-submit-button'>
+              { this.state.showSubmit ?
+                <Button
+                color='teal'
+                content='Submit'
+                onClick={this.matchSubmit} /> :
+                <Button
+                color='teal'
+                content='Game Complete?'
+                onClick={this.gameDone} />
+              }
             </div>
           </div>
         )
@@ -461,11 +558,14 @@ class GameLogger extends Component {
   render() {
   return (
     <div className='logger-container'>
+      <img src={bgImg} className='bg' />
+      {this.renderMatchHeader()}
       {this.renderGameLogger()}
     </div>
     )
   }
 }
+
 
 const mapStateToProps = state => {
   return {

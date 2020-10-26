@@ -10,7 +10,7 @@ import GameLogger from './GameLogger'
 import Routes from './router'
 import '../App.css';
 
-class App extends Component {
+class LeagueStandings extends Component {
 
   render() {
   return (
