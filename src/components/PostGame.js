@@ -198,6 +198,37 @@ class PlayerDashboard extends Component {
               </Table>
             </Card.Content>
             </Card>
+            <Card color='teal'>
+              <Card.Content>
+              <Table celled striped color='teal' verticalAlign='middle'>
+                <Table.Header>
+                  <Table.Row>
+                    <Table.HeaderCell>{this.state.playerTeam.team_name} Season Stats</Table.HeaderCell>
+                    <Table.HeaderCell></Table.HeaderCell>
+                  </Table.Row>
+                </Table.Header>
+
+                <Table.Body>
+                  <Table.Row>
+                    <Table.Cell collapsing>Wins</Table.Cell>
+                    <Table.Cell collapsing>Match Score</Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell collapsing>Losses</Table.Cell>
+                    <Table.Cell collapsing>Home Team Score</Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell collapsing>Total Points Scored</Table.Cell>
+                    <Table.Cell collapsing>Away Team Score</Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell collapsing>Total Points Allowed</Table.Cell>
+                    <Table.Cell collapsing>Total Match Points</Table.Cell>
+                  </Table.Row>
+                </Table.Body>
+              </Table>
+            </Card.Content>
+            </Card>
           </Card.Group>
 
           <div className='game-log-container'>
