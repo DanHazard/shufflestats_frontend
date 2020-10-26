@@ -122,7 +122,7 @@ class PlayerDashboard extends Component {
       return (
         <div>
           <div className='log-header'>
-          <Header textAlign="center" as='h1'>Welcome {this.props.player.first_name}!</Header>
+          <Header textAlign="center" as='h1'>Match Results!</Header>
           <div className='dashboard-icon'>
             <img src={tnb} style={{width: '50px', height: '50px'}}/>
           </div>
@@ -210,19 +210,19 @@ class PlayerDashboard extends Component {
 
                 <Table.Body>
                   <Table.Row>
-                    <Table.Cell collapsing>Wins</Table.Cell>
                     <Table.Cell collapsing>Match Score</Table.Cell>
+                    <Table.Cell collapsing>Score</Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell collapsing>Losses</Table.Cell>
+                    <Table.Cell collapsing>HTS</Table.Cell>
                     <Table.Cell collapsing>Home Team Score</Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell collapsing>Total Points Scored</Table.Cell>
+                    <Table.Cell collapsing>ATS</Table.Cell>
                     <Table.Cell collapsing>Away Team Score</Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell collapsing>Total Points Allowed</Table.Cell>
+                    <Table.Cell collapsing>TMP</Table.Cell>
                     <Table.Cell collapsing>Total Match Points</Table.Cell>
                   </Table.Row>
                 </Table.Body>

@@ -7,6 +7,7 @@ import Login from './Login'
 import PlayerSignUp from './PlayerSignUp'
 import GameLogger from './GameLogger'
 import NavBar from './NavBar'
+import PostGame from './PostGame'
 
 class Routes extends Component {
   render(){
@@ -17,6 +18,7 @@ class Routes extends Component {
           <Route path='/dashboard' component={PlayerDashboard} />
           <Route exact path='/sign_up' component={PlayerSignUp} />
           <Route path='/game' component={GameLogger} />
+        <Route path='/postgame' component={PostGame} />
         </Switch>
       </div>
     )
