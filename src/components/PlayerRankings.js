@@ -15,8 +15,7 @@ class PlayerRankings extends Component {
   render() {
   return (
     <div className="App">
-      <Routes />
-      <Route exact path='/login' component={Login} />
+      This is just a test.
     </div>
   );
   }
@@ -31,5 +30,3 @@ const mapDispatchToProps = {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
-
-github timezone test

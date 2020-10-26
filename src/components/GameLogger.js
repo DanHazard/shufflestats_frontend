@@ -553,8 +553,6 @@ class GameLogger extends Component {
       }
     }
 
-
-
   render() {
   return (
     <div className='logger-container'>
@@ -565,7 +563,6 @@ class GameLogger extends Component {
     )
   }
 }
-
 
 const mapStateToProps = state => {
   return {
