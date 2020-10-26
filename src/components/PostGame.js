@@ -10,8 +10,6 @@ import bgImg from '../images/ShuffleStats_BG.png'
 import buttonImg from '../images/Shufflegram_vector2.svg'
 import tnb from '../images/tangs_n_biscuit_white.png'
 
-
-
 class PlayerDashboard extends Component {
 
   constructor() {
@@ -26,7 +24,6 @@ class PlayerDashboard extends Component {
   componentDidMount() {
     this.checkAuthToken()
   }
-
 
   checkAuthToken = async () => {
     const token = localStorage.getItem("token")
@@ -256,9 +253,7 @@ class PlayerDashboard extends Component {
                 <Button.Content hidden>Log Game!</Button.Content>
             </Button>
           </div>
-
         </div>
-
       )
     } else {
       console.log('No player found.')
@@ -274,7 +269,6 @@ class PlayerDashboard extends Component {
     )
   }
 }
-
 
 const mapStateToProps = state => {
   return {

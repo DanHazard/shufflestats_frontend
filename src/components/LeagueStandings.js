@@ -14,10 +14,6 @@ class LeagueStandings extends Component {
 
   render() {
   return (
-    <div className="App">
-      <Routes />
-      <Route exact path='/login' component={Login} />
-    </div>
   );
   }
 }
